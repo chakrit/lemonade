@@ -1,10 +1,8 @@
 ﻿
 namespace NotesApp.Models
 {
-  public interface IUsersRoot
+  public interface IPasswordService : IDataService
   {
-    User Add(string username, string passwordHash);
-
     string HashPassword(string rawPassword);
   }
 }

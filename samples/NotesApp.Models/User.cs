@@ -3,16 +3,19 @@ using System;
 
 namespace NotesApp.Models
 {
-  public abstract class User
+  public class User
   {
-    public abstract string Username { get; }
-    public abstract string PasswordHash { get; set; }
+    public virtual string Username { get; protected set; }
+    public virtual string PasswordHash { get; protected set; }
 
-    public DateTime Timestamp { get; set; }
+    public DateTime Timestamp { get; protected set; }
 
 
-    public User(string username, string passwordHash)
+    internal User(string username, string passwordHash, DateTime timestamp)
     {
+      Username = username;
+      PasswordHash = passwordHash;
+      Timestamp = timestamp;
     }
   }
 }

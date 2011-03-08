@@ -1,7 +1,7 @@
 ﻿
 using Autofac;
 using NotesApp.Controllers;
-using NotesApp.Models;
+using NotesApp.Services;
 using NotesApp.Views;
 
 namespace NotesApp
@@ -10,24 +10,25 @@ namespace NotesApp
   {
     protected override void Load(ContainerBuilder b)
     {
-      b.RegisterAssemblyTypes(typeof(IDomainRoot).Assembly)
-        .AssignableTo<IDomainRoot>()
-        .InstancePerDependency();
-
       b.RegisterAssemblyTypes(typeof(IView).Assembly)
         .AssignableTo<IView>()
         .AsSelf()
-        .AsImplementedInterfaces()
         .PropertiesAutowired()
         .InstancePerDependency();
 
       b.RegisterAssemblyTypes(typeof(IController).Assembly)
         .AssignableTo<IController>()
         .AsSelf()
-        .AsImplementedInterfaces()
         .OnActivated(a => ((IController)a.Instance).Initialize())
         .PropertiesAutowired()
         .InstancePerDependency();
+
+      b.RegisterAssemblyTypes(typeof(IClientService).Assembly)
+        .AssignableTo<IClientService>()
+        .AsSelf()
+        .AsImplementedInterfaces()
+        .PropertiesAutowired()
+        .SingleInstance();
     }
   }
 }

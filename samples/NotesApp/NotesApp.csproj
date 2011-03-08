@@ -55,9 +55,14 @@
     <Compile Include="Controllers\ControllerBase.cs" />
     <Compile Include="Controllers\IController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\RegistrationController.cs" />
     <Compile Include="CoreModule.cs" />
+    <Compile Include="ModelsModule.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\IClientService.cs" />
+    <Compile Include="Services\INotificationService.cs" />
+    <Compile Include="Services\MessageBoxNotificationService.cs" />
     <Compile Include="Views\IView.cs" />
     <Compile Include="Views\LoginView.cs">
       <SubType>Form</SubType>
@@ -70,6 +75,12 @@
     </Compile>
     <Compile Include="Views\MainView.Designer.cs">
       <DependentUpon>MainView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RegistrationView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\RegistrationView.Designer.cs">
+      <DependentUpon>RegistrationView.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\ViewBase.cs">
       <SubType>Form</SubType>
@@ -85,6 +96,9 @@
     </Compile>
     <EmbeddedResource Include="Views\LoginView.resx">
       <DependentUpon>LoginView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\RegistrationView.resx">
+      <DependentUpon>RegistrationView.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

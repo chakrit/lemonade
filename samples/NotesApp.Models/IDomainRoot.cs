@@ -1,12 +1,12 @@
 ﻿
-using System;
+using System.Collections.Generic;
 
 namespace NotesApp.Models
 {
   public interface IDomainRoot
   {
-    IUsersRoot Users { get; }
+    ICollection<User> Users { get; }
 
-    DateTime GetTimestamp();
+    void Save();
   }
 }

@@ -21,6 +21,7 @@ namespace NotesApp
     {
       var builder = new ContainerBuilder();
       builder.RegisterModule(new CoreModule());
+      builder.RegisterModule(new ModelsModule());
 
       var container = builder.Build();
 
