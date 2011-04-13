@@ -24,7 +24,6 @@ namespace NotesApp
       builder.RegisterModule(new ModelsModule());
 
       var container = builder.Build();
-
       var controller = container.Resolve<LoginController>();
       controller.Show();
       Application.Run();

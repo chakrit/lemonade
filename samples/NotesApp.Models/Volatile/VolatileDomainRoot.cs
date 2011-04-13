@@ -1,5 +1,6 @@
 ﻿
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NotesApp.Models.Volatile
 {
@@ -14,5 +15,6 @@ namespace NotesApp.Models.Volatile
     {
       // volatile, hence nothing to save.
     }
+
   }
 }

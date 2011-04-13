@@ -3,6 +3,7 @@ using System;
 using System.Windows.Forms;
 using NotesApp.Models.Repositories;
 using NotesApp.Views;
+using NotesApp.Models;
 
 namespace NotesApp.Controllers
 {
@@ -11,7 +12,7 @@ namespace NotesApp.Controllers
     private IUserRepository _users;
     private Lazy<RegistrationController> _registration;
 
-    public LoginController(IUserRepository users, Lazy<RegistrationController> registration)
+    public LoginController(IUserRepository users, RegistrationController registration)
     {
       _users = users;
       _registration = registration;

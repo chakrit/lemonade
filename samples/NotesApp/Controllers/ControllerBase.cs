@@ -1,8 +1,8 @@
 ﻿
 using System;
+using NotesApp.Models;
 using NotesApp.Services;
 using NotesApp.Views;
-using NotesApp.Models;
 
 namespace NotesApp.Controllers
 {
@@ -43,8 +43,7 @@ namespace NotesApp.Controllers
       get { return _result; }
       protected set
       {
-        _result = value;
-        _resultIsSet = true;
+        _result = value; _resultIsSet = true;
       }
     }
 
