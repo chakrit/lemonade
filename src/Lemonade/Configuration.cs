@@ -5,6 +5,11 @@ namespace Lemonade
 {
   public sealed class Configuration
   {
+    private static Configuration _default = new Configuration();
+
+    public static Configuration Default { get { return _default; } }
+
+
     public string Host { get; private set; }
     public int Port { get; private set; }
 
