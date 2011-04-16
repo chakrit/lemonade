@@ -7,12 +7,16 @@ namespace Lemonade
 {
   public class RedisList<T> : RedisClientWrapper<T>, IList<T>
   {
-    public RedisList(IRedisClient<T> client) : base(client) { }
+    public RedisList(IRedisClient<T> client, string key) :
+      base(client, key)
+    {
+      // asserts?
+    }
 
 
     public int IndexOf(T item)
     {
-      throw new System.NotImplementedException();
+      return Client.LIndex(
     }
 
     public void Insert(int index, T item)
