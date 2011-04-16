@@ -61,12 +61,15 @@
     <Compile Include="ILemonadeFactory.cs" />
     <Compile Include="IKeyManager.cs" />
     <Compile Include="KeyManager.cs" />
+    <Compile Include="Configuration.cs" />
     <Compile Include="ObjectClient.cs" />
+    <Compile Include="ObjectClientsPool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ClientWrapper.cs" />
     <Compile Include="RedisList.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IContext.cs" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
