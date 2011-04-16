@@ -44,7 +44,6 @@
   <ItemGroup>
     <Compile Include="DomainAssert.cs" />
     <Compile Include="DomainException.cs" />
-    <Compile Include="Redis\RedisDomainRoot.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />
     <Compile Include="Repositories\UserRepositoryImpl.cs" />
     <Compile Include="Services\IDataService.cs" />

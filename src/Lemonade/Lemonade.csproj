@@ -58,6 +58,9 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Conventions\IConvention.cs" />
+    <Compile Include="Conventions\IIdConvention.cs" />
+    <Compile Include="Conventions\IIgnoreConvention.cs" />
     <Compile Include="ILemonadeFactory.cs" />
     <Compile Include="IKeyManager.cs" />
     <Compile Include="KeyManager.cs" />
