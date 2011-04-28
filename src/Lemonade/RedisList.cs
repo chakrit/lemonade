@@ -1,27 +1,43 @@
 ﻿
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using Sider;
 
 namespace Lemonade
 {
-  public class RedisList<T> : RedisClientWrapper<T>, IList<T>
+  internal class RedisList<T> : ContextWrapper, IList<T>
   {
-    public RedisList(IRedisClient<T> client, string key) :
-      base(client, key)
+    private IContext _context;
+    private string _listKey;
+
+    public RedisList(IContext context, string listKey) :
+      base(context, listKey)
     {
-      // asserts?
+      _context = context;
+      _listKey = listKey;
     }
 
 
     public int IndexOf(T item)
     {
-      return Client.LIndex(
+      // no natively supported command,
+      // may needs a proper indexing system first
+      throw new NotSupportedException();
     }
 
     public void Insert(int index, T item)
     {
-      throw new System.NotImplementedException();
+      // not sure if repeating this until
+      // the transaction succeeds is really a good idea
+      UntilTrue(() =>
+      {
+        Client.Watch(Key);
+        var before = Client.LIndex(Key, index);
+
+        Client.Multi();
+        Client.LInsert(Key, before, item, afterPivot: false);
+        return Client.Exec().Single<int>() != -1;
+      });
     }
 
     public void RemoveAt(int index)

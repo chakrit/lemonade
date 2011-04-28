@@ -12,6 +12,8 @@
     <AssemblyName>Lemonade</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -49,27 +51,35 @@
     <Reference Include="NLog">
       <HintPath>..\..\packages\NLog.1.0.0.505\lib\NLog.dll</HintPath>
     </Reference>
-    <Reference Include="Sider, Version=0.5.4123.36758, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Sider, Version=0.6.4133.18137, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Sider.0.5\lib\net40\Sider.dll</HintPath>
+      <HintPath>..\..\packages\Sider.0.6\lib\net40\Sider.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Context.cs" />
+    <Compile Include="ContextBuilder.cs" />
     <Compile Include="Conventions\IConvention.cs" />
     <Compile Include="Conventions\IIdConvention.cs" />
     <Compile Include="Conventions\IIgnoreConvention.cs" />
+    <Compile Include="CounterImpl.cs" />
+    <Compile Include="ICounter.cs" />
+    <Compile Include="IImplBuilder.cs" />
     <Compile Include="ILemonadeFactory.cs" />
     <Compile Include="IKeyManager.cs" />
+    <Compile Include="ImplBuilder.cs" />
     <Compile Include="KeyManager.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="ObjectClient.cs" />
     <Compile Include="ObjectClientsPool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ClientWrapper.cs" />
+    <Compile Include="ContextWrapper.cs" />
     <Compile Include="RedisList.cs" />
+    <Compile Include="RedisHashInterceptor.cs" />
+    <Compile Include="RedisSet.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IContext.cs" />

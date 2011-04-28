@@ -13,10 +13,18 @@ namespace Lemonade
     public string Host { get; private set; }
     public int Port { get; private set; }
 
+    public string KeyPrefix { get; private set; }
+    public string KeySeparator { get; private set; }
+    public string RootKey { get; private set; }
+
     private Configuration()
     {
       Host = RedisSettings.Default.Host;
       Port = RedisSettings.Default.Port;
+
+      KeySeparator = ":";
+      KeyPrefix = "lemon" + KeySeparator;
+      RootKey = "root";
     }
 
     public static Builder New() { return new Builder(); }
@@ -53,6 +61,18 @@ namespace Lemonade
       public Builder Port(int port)
       {
         _settings.Port = port;
+        return this;
+      }
+
+      public Builder KeyPrefix(string prefix)
+      {
+        _settings.KeyPrefix = prefix;
+        return this;
+      }
+
+      public Builder RootKey(string rootKey)
+      {
+        _settings.RootKey = rootKey;
         return this;
       }
     }

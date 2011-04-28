@@ -1,15 +1,19 @@
 ﻿
-using System.Collections.Generic;
-using Lemonade.Conventions;
-using Sider;
+using System;
+using Castle.DynamicProxy;
 
 namespace Lemonade
 {
-  public interface IContext
+  public interface IContext : IDisposable
   {
-    IClientsPool<object> ClientsPool { get; }
-    IKeyManager Keys { get; }
+    Configuration Config { get; }
+    ObjectClient Client { get; }
 
-    IEnumerable<IConvention> Conventions { get; }
+    IKeyManager Keys { get; }
+    IImplBuilder Implementations { get; }
+    ProxyGenerator Proxies { get; }
+
+    T GetRoot<T>() where T : class;
+    T GetObject<T>(string objId) where T : class;
   }
 }
