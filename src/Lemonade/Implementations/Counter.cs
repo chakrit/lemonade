@@ -1,9 +1,9 @@
 ﻿
-namespace Lemonade
+namespace Lemonade.Implementations
 {
-  internal class CounterImpl : ContextWrapper, ICounter, ICounter64
+  internal class Counter : ContextWrapper, ICounter, ICounter64
   {
-    public CounterImpl(IContext context, string key) :
+    public Counter(IContext context, string key) :
       base(context, key) { }
 
 

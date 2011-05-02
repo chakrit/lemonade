@@ -2,11 +2,11 @@
 using System;
 using Castle.Core.Interceptor;
 
-namespace Lemonade
+namespace Lemonade.Implementations
 {
-  internal class RedisHashInterceptor : ContextWrapper, IInterceptor
+  internal class HashInterceptor : ContextWrapper, IInterceptor
   {
-    public RedisHashInterceptor(IContext context, string key) : base(context, key) { }
+    public HashInterceptor(IContext context, string key) : base(context, key) { }
 
 
     void IInterceptor.Intercept(IInvocation invocation)

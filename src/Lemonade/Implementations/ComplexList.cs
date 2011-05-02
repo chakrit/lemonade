@@ -3,14 +3,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Lemonade
+namespace Lemonade.Implementations
 {
-  internal class RedisList<T> : ContextWrapper, IList<T>
+  internal class ComplexList<T> : ContextWrapper, IList<T>
   {
     private IContext _context;
     private string _listKey;
 
-    public RedisList(IContext context, string listKey) :
+    public ComplexList(IContext context, string listKey) :
       base(context, listKey)
     {
       _context = context;
@@ -42,6 +42,7 @@ namespace Lemonade
 
     public void RemoveAt(int index)
     {
+      Client.LRem(
       throw new System.NotImplementedException();
     }
 

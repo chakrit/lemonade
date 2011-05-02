@@ -1,11 +1,11 @@
 ﻿
 using System.Collections.Generic;
 
-namespace Lemonade
+namespace Lemonade.Implementations
 {
-  internal class RedisSet<T> : ContextWrapper, ISet<T>
+  internal class SimpleSet<T> : ContextWrapper, ISet<T>
   {
-    public RedisSet(IContext context, string key) :
+    public SimpleSet(IContext context, string key) :
       base(context, key) { }
 
 

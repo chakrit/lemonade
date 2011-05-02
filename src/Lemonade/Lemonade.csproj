@@ -65,7 +65,8 @@
     <Compile Include="Conventions\IConvention.cs" />
     <Compile Include="Conventions\IIdConvention.cs" />
     <Compile Include="Conventions\IIgnoreConvention.cs" />
-    <Compile Include="CounterImpl.cs" />
+    <Compile Include="Implementations\ComplexSet.cs" />
+    <Compile Include="Implementations\Counter.cs" />
     <Compile Include="ICounter.cs" />
     <Compile Include="IImplBuilder.cs" />
     <Compile Include="ILemonadeFactory.cs" />
@@ -73,13 +74,16 @@
     <Compile Include="ImplBuilder.cs" />
     <Compile Include="KeyManager.cs" />
     <Compile Include="Configuration.cs" />
+    <Compile Include="LAssert.cs" />
+    <Compile Include="ObjectEnumExtensions.cs" />
     <Compile Include="ObjectClient.cs" />
     <Compile Include="ObjectClientsPool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ContextWrapper.cs" />
-    <Compile Include="RedisList.cs" />
-    <Compile Include="RedisHashInterceptor.cs" />
-    <Compile Include="RedisSet.cs" />
+    <Compile Include="Implementations\ComplexList.cs" />
+    <Compile Include="Implementations\HashInterceptor.cs" />
+    <Compile Include="Implementations\SimpleSet.cs" />
+    <Compile Include="Implementations\SimpleList.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IContext.cs" />
