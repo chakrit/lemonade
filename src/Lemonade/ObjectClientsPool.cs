@@ -5,19 +5,13 @@ namespace Lemonade
 {
   public class ObjectClientsPool : ThreadwisePool<object>
   {
-    // TODO: Make IClientsPool in Sider expose the settings
-    private RedisSettings _settings;
-
     public ObjectClientsPool(RedisSettings settings) :
-      base(settings)
-    {
-      _settings = settings;
-    }
+      base(settings) { }
 
 
     protected override IRedisClient<object> BuildClient()
     {
-      return new ObjectClient(_settings);
+      return new ObjectClient(Settings);
     }
   }
 }

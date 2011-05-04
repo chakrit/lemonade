@@ -1,5 +1,7 @@
 ﻿
 using System;
+using Castle.DynamicProxy;
+
 namespace Lemonade
 {
   public abstract class ContextWrapper
@@ -7,9 +9,14 @@ namespace Lemonade
     private IContext _context;
     private string _key;
 
-    protected string Key { get { return _key; } }
+
+    protected IContext Context { get { return _context; } }
 
     protected ObjectClient Client { get { return _context.Client; } }
+    protected string Key { get { return _key; } }
+
+    protected IImplBuilder Implementations { get { return _context.Implementations; } }
+    protected ProxyGenerator Proxies { get { return _context.Proxies; } }
     protected IKeyManager Keys { get { return _context.Keys; } }
 
     protected ContextWrapper(IContext context, string key)

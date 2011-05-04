@@ -28,13 +28,8 @@ namespace Lemonade
     public T GetRoot<T>() where T : class
     {
       return (T)Implementations
-        .BuildImplementationFor<T>(this, Keys.GetRootKey());
-    }
-
-    public T GetObject<T>(string objId) where T : class
-    {
-      return (T)Implementations
-        .BuildImplementationFor<T>(this, Keys.GetKey<T>(objId));
+        .GetActivatorFor(typeof(T), this, Keys.GetRootKey())
+        .Invoke();
     }
 
 

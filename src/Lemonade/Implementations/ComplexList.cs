@@ -2,20 +2,33 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Lemonade.Implementations
 {
   internal class ComplexList<T> : ContextWrapper, IList<T>
   {
-    private IContext _context;
-    private string _listKey;
+    public bool IsReadOnly { get { return false; } }
+
+    public int Count { get { return Client.LLen(Key); } }
+
+    public T this[int index]
+    {
+      get { return (T)Client.Get((string)Client.LIndex(Key, index)); }
+      set
+      {
+        var objKey = Keys.GetObjectKey(value);
+        Client.Pipeline(c =>
+        {
+          c.Set(objKey, value);
+          c.LSet(Key, index, objKey);
+        });
+      }
+    }
+
 
     public ComplexList(IContext context, string listKey) :
-      base(context, listKey)
-    {
-      _context = context;
-      _listKey = listKey;
-    }
+      base(context, listKey) { }
 
 
     public int IndexOf(T item)
@@ -36,71 +49,72 @@ namespace Lemonade.Implementations
 
         Client.Multi();
         Client.LInsert(Key, before, item, afterPivot: false);
-        return Client.Exec().Single<int>() != -1;
+        return Client.Exec().Any();
       });
     }
 
     public void RemoveAt(int index)
     {
-      Client.LRem(
-      throw new System.NotImplementedException();
-    }
+      UntilTrue(() =>
+      {
+        Client.Watch(Key);
+        var item = Client.LIndex(Key, index);
 
-    public T this[int index]
-    {
-      get
-      {
-        throw new System.NotImplementedException();
-      }
-      set
-      {
-        throw new System.NotImplementedException();
-      }
+        Client.Multi();
+        Client.LRem(Key, 1, item);
+        return Client.Exec().Any();
+      });
     }
 
     public void Add(T item)
     {
-      throw new System.NotImplementedException();
+      var objKey = Keys.GetObjectKey(item);
+      Client.Pipeline(c =>
+      {
+        c.Set(objKey, item);
+        c.RPush(Key, objKey);
+      });
     }
 
     public void Clear()
     {
-      throw new System.NotImplementedException();
+      Client.Del(Key);
     }
 
     public bool Contains(T item)
     {
-      throw new System.NotImplementedException();
+      throw new System.NotSupportedException();
     }
 
     public void CopyTo(T[] array, int arrayIndex)
     {
-      throw new System.NotImplementedException();
+      // TODO: Optimize
+      var src = this.ToArray();
+      for (var i = 0; i < src.Length; i++, arrayIndex++)
+        array[arrayIndex] = src[i];
     }
 
-    public int Count
-    {
-      get { throw new System.NotImplementedException(); }
-    }
-
-    public bool IsReadOnly
-    {
-      get { throw new System.NotImplementedException(); }
-    }
 
     public bool Remove(T item)
     {
-      throw new System.NotImplementedException();
+      return Client.LRem(Key, 1, item) == 1;
     }
+
 
     public IEnumerator<T> GetEnumerator()
     {
-      throw new System.NotImplementedException();
+      return Client
+        .LRange(Key, 0, -1)
+        .Cast<string>()
+        .Select(itemKey => Implementations.GetActivatorFor(typeof(T), Context, itemKey))
+        .Select(act => act())
+        .Cast<T>()
+        .GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
     {
-      throw new System.NotImplementedException();
+      return this.GetEnumerator();
     }
   }
 }

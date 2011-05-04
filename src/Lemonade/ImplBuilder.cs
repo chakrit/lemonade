@@ -15,75 +15,44 @@ namespace Lemonade
     }
 
 
-    public T BuildImplementationFor<T>(IContext context, string key)
-      where T : class
+    public Func<object> GetActivatorFor(Type type, IContext context, string key)
     {
-      var type = typeof(T);
-      if (isSimpleType(type))
-        throw new ArgumentException("Cannot build implementation for simple types.");
+      if (Types.IsSimpleType(type))
+        return null; // doesn't support building simple types
 
       if (type == typeof(ICounter))
-        return (T)(object)new Counter(context, key);
+        return () => new Counter(context, key);
 
-      if (type.IsGenericTypeDefinition) {
-        var genericType = type.GetGenericTypeDefinition();
-        var genericArg = genericType.GetGenericArguments()[0];
+      if (type.IsGenericType) {
+        var genericDef = type.GetGenericTypeDefinition();
+        var genericArg = type.GetGenericArguments()[0];
 
-        if (genericType == typeof(IList<>)) {
-          var listType = isSimpleType(genericArg) ?
+        if (genericDef == typeof(IList<>)) {
+          var listType = Types.IsSimpleType(genericArg) ?
             typeof(SimpleList<>).MakeGenericType(genericArg) :
             typeof(ComplexList<>).MakeGenericType(genericArg);
 
-          return (T)Activator.CreateInstance(listType, context, key);
+          return () => Activator.CreateInstance(listType, context, key);
         }
 
-        if (genericType == typeof(ISet<>)) {
-          var setType = isSimpleType(genericArg) ?
+        if (genericDef == typeof(ISet<>)) {
+          var setType = Types.IsSimpleType(genericArg) ?
             typeof(SimpleSet<>).MakeGenericType(genericArg) :
             typeof(ComplexSet<>).MakeGenericType(genericArg);
 
-          return (T)Activator.CreateInstance(setType, context, key);
+          return () => Activator.CreateInstance(setType, context, key);
         }
       }
 
-      // interface types, build an interceptor
-      if (type.IsInterface) {
-        return (T)context.Proxies.CreateInterfaceProxyWithoutTarget(
-          type, new HashInterceptor(context, key));
+      // un-supported type
+      if (type.IsInterface)
+        return () => context
+          .Proxies
+          .CreateInterfaceProxyWithoutTarget(type, new HashInterceptor(context, key));
 
-      }
-      else { // poco?
-        // TODO: Proxiability check.
-        return (T)context.Proxies.CreateClassProxy(type,
-          new HashInterceptor(context, key));
-      }
-
-
-      //throw new NotSupportedException(string.Format(
-      //  "There is no supporting implementation for type {0}.",
-      //  typeof(T).FullName));
-    }
-
-
-    private bool isSimpleType(Type t)
-    {
-      if (t == typeof(string) ||
-        t == typeof(byte) ||
-        t == typeof(sbyte) ||
-        t == typeof(int) ||
-        t == typeof(uint) ||
-        t == typeof(short) ||
-        t == typeof(ushort) ||
-        t == typeof(long) ||
-        t == typeof(ulong) ||
-        t == typeof(float) ||
-        t == typeof(double) ||
-        t == typeof(decimal) ||
-        t == typeof(char) ||
-        t == typeof(bool))
-        return true;
-
-      return false;
+      return () => context
+        .Proxies
+        .CreateClassProxy(type, new HashInterceptor(context, key));
     }
   }
 }

@@ -14,6 +14,5 @@ namespace Lemonade
     ProxyGenerator Proxies { get; }
 
     T GetRoot<T>() where T : class;
-    T GetObject<T>(string objId) where T : class;
   }
 }

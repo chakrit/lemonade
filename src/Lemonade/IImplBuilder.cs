@@ -1,8 +1,11 @@
 ﻿
+using System;
+
 namespace Lemonade
 {
   public interface IImplBuilder
   {
-    T BuildImplementationFor<T>(IContext context, string key) where T : class;
+    // TODO: Prevent boxing?
+    Func<object> GetActivatorFor(Type type, IContext context, string key);
   }
 }

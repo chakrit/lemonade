@@ -1,6 +1,5 @@
 ﻿
 using System;
-using System.Collections.Generic;
 using Lemonade;
 
 namespace HelloWorld
@@ -10,27 +9,56 @@ namespace HelloWorld
     internal static void Main(string[] args) { new Program().Run(); }
 
 
+    private Random _rand = new Random();
+
+
     public void Run()
     {
       var builder = new ContextBuilder();
       using (var ctx = builder.NewContext()) {
-        var counter = ctx.GetRoot<IList<string>>();
+        var root = ctx.GetRoot<IDomainRoot>();
 
-        while (true) {
-          Console.WriteLine("Hit UP to increment, DOWN to decrement.");
+        initSampleData(root);
+        foreach (var comp in root.Companies) {
+          Console.WriteLine(" {0} employees ", comp.Name);
+          Console.WriteLine(" ==== ");
 
-          var key = Console.ReadKey().Key;
-          int value;
+          foreach (var emp in comp.Employees)
+            Console.WriteLine("{0} ({1}), {2} years old.",
+              emp.Name, emp.Email, emp.Age);
 
-          switch (key) {
-          case ConsoleKey.UpArrow: value = counter.Increment(); break;
-          case ConsoleKey.DownArrow: value = counter.Decrement(); break;
-          default: value = counter.GetValue(); break;
-          }
-
-          Console.WriteLine("Counter = {0}", value);
+          Console.WriteLine("\n");
         }
       }
+
+      Console.WriteLine("Done.");
+      Console.ReadKey();
+    }
+
+    private void initSampleData(IDomainRoot root)
+    {
+      root.Companies.Add(getSampleCompany("Apple"));
+      root.Companies.Add(getSampleCompany("Google"));
+      root.Companies.Add(getSampleCompany("Microsoft"));
+
+      foreach (var company in root.Companies)
+        company.Employees.Add(getSampleEmployee(company.Name));
+    }
+
+    private Company getSampleCompany(string compName)
+    {
+      return new Company { Name = compName };
+    }
+
+    private Employee getSampleEmployee(string companyName)
+    {
+      var name = Guid.NewGuid().ToString();
+
+      return new Employee {
+        Name = name,
+        Age = _rand.Next(15, 55),
+        Email = name + "@" + companyName + ".com"
+      };
     }
   }
 }

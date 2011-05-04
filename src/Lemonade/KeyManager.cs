@@ -1,27 +1,46 @@
 ﻿
+using System;
+using Lemonade.Conventions;
+
 namespace Lemonade
 {
   public class KeyManager : IKeyManager
   {
-    private Configuration _config;
+    private IIdConvention _convention;
+    private string _keySeparator;
+    private string _keyPrefix;
+    private string _rootKey;
 
-    public KeyManager(Configuration config) { _config = config; }
+    public KeyManager(Configuration config)
+    {
+      _convention = config.GetConventionOrDefault<IIdConvention>(
+        new HashCodeIdConvention());
 
+      _keySeparator = config.KeySeparator;
+      _keyPrefix = config.KeyPrefix;
+      _rootKey = config.RootKey;
+    }
+
+
+    public string GetObjectKey(object obj)
+    {
+      return stitch(_keyPrefix, _convention.GetObjectId(obj));
+    }
 
     public string GetRootKey()
     {
-      return stitch(_config.KeyPrefix, _config.RootKey);
+      return stitch(_keyPrefix, _rootKey);
     }
 
-    public string GetKey<T>(string objId)
+    public string GetChildKey(Type childType, string parentKey, string childName)
     {
-      return stitch(_config.KeyPrefix, "objs", objId);
+      return stitch(parentKey, childName);
     }
 
 
     private string stitch(params string[] keys)
     {
-      return string.Join(_config.KeySeparator, keys);
+      return string.Join(_keySeparator, keys);
     }
   }
 }

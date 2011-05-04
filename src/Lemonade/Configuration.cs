@@ -1,4 +1,8 @@
 ﻿
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Lemonade.Conventions;
 using Sider;
 
 namespace Lemonade
@@ -17,6 +21,8 @@ namespace Lemonade
     public string KeySeparator { get; private set; }
     public string RootKey { get; private set; }
 
+    public ICollection<IConvention> ConventionOverrides { get; private set; }
+
     private Configuration()
     {
       Host = RedisSettings.Default.Host;
@@ -25,6 +31,8 @@ namespace Lemonade
       KeySeparator = ":";
       KeyPrefix = "lemon" + KeySeparator;
       RootKey = "root";
+
+      ConventionOverrides = Array.AsReadOnly(new IConvention[] { });
     }
 
     public static Builder New() { return new Builder(); }
@@ -38,17 +46,31 @@ namespace Lemonade
         .Port(Port);
     }
 
+    public T GetConventionOrDefault<T>(T defaultConvention)
+      where T : class, IConvention
+    {
+      return ConventionOverrides
+        .OfType<T>()
+        .LastOrDefault() ?? defaultConvention;
+    }
+
 
     public class Builder
     {
       private Configuration _settings;
+      private IList<IConvention> _conventions;
 
       public Builder() { _settings = new Configuration(); }
       public Builder(Configuration settings) { _settings = settings; }
 
-      public static implicit operator Configuration(Builder b)
+      public static implicit operator Configuration(Builder b) { return b.Build(); }
+
+      public Configuration Build()
       {
-        return b._settings;
+        if (_conventions != null)
+          _settings.ConventionOverrides = Array.AsReadOnly(_conventions.ToArray());
+
+        return _settings;
       }
 
 
@@ -73,6 +95,13 @@ namespace Lemonade
       public Builder RootKey(string rootKey)
       {
         _settings.RootKey = rootKey;
+        return this;
+      }
+
+      public Builder OverrideConvention(IConvention convention)
+      {
+        _conventions = _conventions ?? new List<IConvention>();
+        _conventions.Add(convention);
         return this;
       }
     }
