@@ -51,9 +51,9 @@
     <Reference Include="NLog">
       <HintPath>..\..\packages\NLog.1.0.0.505\lib\NLog.dll</HintPath>
     </Reference>
-    <Reference Include="Sider, Version=0.6.4133.18137, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Sider, Version=0.8.4169.32836, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Sider.0.6\lib\net40\Sider.dll</HintPath>
+      <HintPath>..\..\packages\Sider.0.8\lib\net40-Client\Sider.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -76,7 +76,9 @@
     <Compile Include="ILemonadeFactory.cs" />
     <Compile Include="IKeyManager.cs" />
     <Compile Include="ImplBuilder.cs" />
+    <Compile Include="IKeyFilter.cs" />
     <Compile Include="JsonSerializer.cs" />
+    <Compile Include="KeyedObject.cs" />
     <Compile Include="KeyManager.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="LAssert.cs" />
